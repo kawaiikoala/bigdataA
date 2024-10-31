@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.simplecoding.simpledms.mapper.basic.FaqMapper">
+    <select id="selectFaqList"
+            parameterType="Criteria"
+            resultType="Faq">
+        SELECT * FROM TB_FAQ
+        WHERE TITLE LIKE '%'|| #{searchKeyword} ||'%'
+        OFFSET #{pageIndex} * #{recordCountPerPage} ROWS
+            FETCH NEXT #{recordCountPerPage} ROWS ONLY
+    </select>
+
+    <select id="selectFaqListTotCnt"
+            parameterType="Criteria"
+            resultType="int">
+        SELECT COUNT(*) FROM TB_FAQ
+        WHERE TITLE LIKE '%' ||#{searchKeyword}|| '%'
+    </select>
+
+
+    <insert id="insert"
+            parameterType="Faq">
+    INSERT INTO TB_FAQ (FNO,TITLE,CONTENT)
+    VALUES (SQ_FAQ.NEXTVAL,#{title},#{content})
+    </insert>
+
+    <select id="selectFaq"
+            parameterType="int"
+            resultType="Faq">
+    SELECT * FROM TB_FAQ
+    WHERE FNO = #{fno}
+    </select>
+
+    <update id="update"
+            parameterType="Faq">
+
+        UPDATE TB_FAQ
+        SET TITLE=#{title},CONTENT=#{content}
+        WHERE FNO = #{fno}
+
+    </update>
+
+
+    <delete id="delete"
+            parameterType="int">
+
+        DELETE FROM TB_FAQ
+               WHERE FNO = #{fno}
+
+    </delete>
+
+
+</mapper>
